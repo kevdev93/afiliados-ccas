@@ -1,0 +1,341 @@
+/* 17° Encuentro Red de Afiliados 2026 — presentación
+   Lienzo fijo de 1920×1080 escalado a la pantalla; el cielo y las ondas cubren toda la ventana. */
+
+@font-face { font-family: Montserrat; font-weight: 300; src: url(assets/fuentes/montserrat-300.woff2) format("woff2"); }
+@font-face { font-family: Montserrat; font-weight: 400; src: url(assets/fuentes/montserrat-400.woff2) format("woff2"); }
+@font-face { font-family: Montserrat; font-weight: 500; src: url(assets/fuentes/montserrat-500.woff2) format("woff2"); }
+@font-face { font-family: Montserrat; font-weight: 600; src: url(assets/fuentes/montserrat-600.woff2) format("woff2"); }
+@font-face { font-family: Montserrat; font-weight: 700; src: url(assets/fuentes/montserrat-700.woff2) format("woff2"); }
+@font-face { font-family: Bodoni; font-weight: 400; src: url(assets/fuentes/bodoni-400.woff2) format("woff2"); }
+@font-face { font-family: Bodoni; font-weight: 500; src: url(assets/fuentes/bodoni-500.woff2) format("woff2"); }
+@font-face { font-family: Bodoni; font-weight: 600; src: url(assets/fuentes/bodoni-600.woff2) format("woff2"); }
+
+:root {
+  --azul: #1f3d80;
+  --celeste: #008dd4;
+  --tinta: #1d1d1b;
+  --texto-suave: rgba(232, 238, 250, .82);
+  --serif: Bodoni, "Bodoni 72", Didot, Georgia, serif;
+  --sans: Montserrat, "Avenir Next", "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #0b2154;
+  color: #fff;
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+body.sin-cursor, body.sin-cursor * { cursor: none !important; }
+
+#cielo { position: fixed; inset: 0; background-color: #0b2154; }
+#cielo::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 110% 90% at 50% 45%, rgba(255,255,255,.07), rgba(0,0,0,.34) 100%);
+}
+#ondas {
+  position: fixed; top: 0; left: 0;
+  width: calc(100vw + 2400px); height: calc(100vh + 2400px);
+  background: url(assets/marca/ondas.svg) 0 0 / 2400px 2400px;
+  will-change: transform;
+}
+
+#escenario { position: fixed; inset: 0; overflow: hidden; cursor: pointer; }
+#lienzo { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; }
+
+.escena { position: absolute; inset: 0; }
+.capa { position: absolute; inset: 0; will-change: transform; pointer-events: none; }
+.ola {
+  position: absolute; left: -1000px; top: -800px; width: 3920px; height: 2680px;
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 67%, transparent 100%);
+          mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 67%, transparent 100%);
+}
+
+/* Logo fijo: va en su propia capa, por encima del mundo, y nunca se mueve. */
+#marcas { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; pointer-events: none; }
+#marca { position: absolute; left: 56px; top: 44px; width: 250px; height: 49px; }
+#marca::before {
+  content: ""; position: absolute; left: -130px; top: -110px; width: 520px; height: 270px;
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(3,10,30,.72), rgba(3,10,30,.45) 45%, transparent 100%);
+  transition: opacity .9s ease;
+}
+body.fondo-claro #marca::before { opacity: 0; }
+#marca i { position: absolute; inset: 0; transition: opacity .9s ease; }
+#marca .blanco { background: url(assets/marca/ccas-blanco-h.png) 0 0 / 100% 100% no-repeat; filter: drop-shadow(0 2px 10px rgba(0,0,0,.55)); }
+#marca .azul {
+  background: #1f3d80; opacity: 0;
+  -webkit-mask: url(assets/marca/ccas-blanco-h.png) 0 0 / 100% 100% no-repeat;
+          mask: url(assets/marca/ccas-blanco-h.png) 0 0 / 100% 100% no-repeat;
+}
+body.fondo-claro #marca .blanco { opacity: 0; }
+body.fondo-claro #marca .azul { opacity: 1; }
+
+#negro { position: fixed; inset: 0; background: #000; opacity: 0; pointer-events: none; transition: opacity .6s; z-index: 5; }
+#negro.activo { opacity: 1; }
+
+#carga { position: fixed; left: 50%; top: 50%; width: 320px; height: 2px; margin-left: -160px; background: rgba(255,255,255,.2); z-index: 6; }
+#carga i { display: block; width: 0; height: 100%; background: #fff; }
+body.listo #carga { display: none; }
+body:not(.listo) #escenario { visibility: hidden; }
+
+#aviso {
+  position: fixed; right: 28px; bottom: 24px; z-index: 7;
+  padding: 10px 18px; border-radius: 40px;
+  background: rgba(0,0,0,.6); font-size: 15px; opacity: 0; pointer-events: none;
+}
+
+#ayuda {
+  position: fixed; right: 32px; top: 32px; z-index: 8; width: 430px;
+  padding: 24px 28px; border-radius: 14px;
+  background: rgba(6,16,44,.93); border: 1px solid rgba(255,255,255,.2); font-size: 15px;
+}
+#ayuda[hidden] { display: none; }
+#ayuda h2 { margin: 0 0 12px; font-size: 19px; font-weight: 600; }
+#ayuda dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 7px 16px; }
+#ayuda dt { color: #9fd4f3; font-weight: 500; }
+#ayuda dd { margin: 0; }
+#ayuda-paso { margin: 14px 0 0; opacity: .7; font-size: 13px; }
+
+/* ---------- empresa ---------- */
+
+.fondo-foto { overflow: visible; }
+.desvanecido {
+  position: absolute; left: -240px; top: -160px; width: 2400px; height: 1400px;
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 62%, transparent 100%);
+          mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 62%, transparent 100%);
+}
+.desvanecido img { display: block; width: 100%; height: 100%; object-fit: cover; filter: brightness(.46) saturate(.7); }
+.desvanecido .velo {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(4,10,30,.82) 12%, rgba(4,10,30,.5) 44%, rgba(4,10,30,0) 66%);
+}
+.invertida .velo { transform: scaleX(-1); }
+
+/* Arco de la identidad con resplandor */
+.formas { opacity: 0; will-change: transform, opacity; }
+.pose-arco { position: absolute; width: 1900px; height: 2278px; }
+.pose-arco.p0 { left: -120px; top: -300px; }
+.pose-arco.p1 { left: 140px; top: -300px; transform: scaleX(-1); }
+.pose-arco.p2 { left: 120px; top: -560px; transform: rotate(120deg); }
+.pose-anillo { position: absolute; width: 1660px; height: 1693px; }
+.pose-anillo.a0 { left: -700px; top: -640px; }
+.pose-anillo.a1 { left: -640px; top: -310px; }
+.pose-anillo.a2 { left: 900px; top: 40px; }
+.pose-anillo.a3 { left: 880px; top: -320px; }
+.giro { position: absolute; inset: 0; animation: girar 110s linear infinite; will-change: transform; }
+.giro.lento { animation-duration: 170s; }
+.giro.contrario { animation-direction: reverse; }
+@keyframes girar { to { transform: rotate(360deg); } }
+.arco { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; opacity: .17; }
+.halo-arco { position: absolute; left: -11.3%; top: -9.4%; width: 122.6%; height: 118.9%; opacity: .36; }
+.pose-anillo .halo-arco { top: -11.1%; height: 122.2%; }
+
+.ficha {
+  position: absolute; left: 110px; top: 0; bottom: 0; width: 690px;
+  display: flex; flex-direction: column; justify-content: center;
+  text-shadow: 0 2px 30px rgba(0,0,0,.45);
+}
+.invertida .ficha { left: auto; right: 110px; }
+.ficha h1 { margin: 0; font: 500 84px/1.08 var(--serif); letter-spacing: -.005em; }
+.ficha h2 { margin: 20px 0 0; font: 500 33px/1.25 var(--sans); color: var(--texto-suave); letter-spacing: .01em; }
+.anos { display: flex; align-items: baseline; gap: 14px; margin: 34px 0 0; }
+.anos b { font: 500 92px/1 var(--serif); }
+/* Número de años: flota lento y su resplandor respira. Solo usa transform y opacity, que no repintan. */
+.anos b, .ap-cifra b {
+  position: relative; display: inline-block; will-change: transform;
+  animation: flotar 7s ease-in-out infinite alternate;
+}
+.anos b::after, .ap-cifra b::after {
+  content: attr(data-n); position: absolute; left: 0; top: 0; color: currentColor;
+  text-shadow: 0 0 26px currentColor, 0 0 54px currentColor;
+  filter: blur(9px); will-change: opacity; pointer-events: none;
+  animation: respirar 5s ease-in-out infinite alternate;
+}
+@keyframes flotar {
+  from { transform: translateY(5px) scale(1); }
+  to { transform: translateY(-5px) scale(1.05); }
+}
+@keyframes respirar {
+  from { opacity: .45; }
+  to { opacity: 1; }
+}
+.anos span { font: 500 30px/1 var(--sans); letter-spacing: .08em; }
+.anos i { align-self: center; width: 70px; height: 1px; background: currentColor; opacity: .7; margin: 0 8px; }
+.anos em { font: 400 28px/1 var(--sans); font-style: normal; color: #fff; letter-spacing: .04em; }
+
+.placa {
+  display: flex; align-items: center; justify-content: center;
+  align-self: flex-start;
+  height: 170px; min-width: 200px; max-width: 460px; padding: 18px 44px; margin-bottom: 40px;
+  background: #fff; border-radius: 85px;
+  box-shadow: 0 16px 50px rgba(0,0,0,.35);
+}
+.placa.oscura { background: #0d2a66; border: 1px solid rgba(255,255,255,.3); }
+.placa img { display: block; max-width: 100%; max-height: 134px; object-fit: contain; }
+
+
+/* cápsulas */
+.capsula, .marco, .redonda, .marco-grupo {
+  position: absolute; overflow: hidden; border: 3px solid rgba(255,255,255,.92);
+  box-shadow: 0 0 110px 14px var(--resplandor, rgba(108,196,242,.24)), 0 30px 80px rgba(0,0,0,.45);
+}
+.capsula { border-radius: 999px; }
+.capsula img, .marco img, .redonda img, .marco-grupo img, .panel img {
+  position: absolute; left: -15px; top: -15px;
+  width: calc(100% + 30px); height: calc(100% + 30px); object-fit: cover;
+}
+.capsula.c1 { left: 830px; top: 190px; width: 320px; height: 720px; }
+.capsula.c2 { left: 1170px; top: 90px; width: 340px; height: 900px; }
+.capsula.c3 { left: 1530px; top: 190px; width: 320px; height: 720px; }
+.invertida .capsula.c1 { left: 70px; }
+.invertida .capsula.c2 { left: 410px; }
+.invertida .capsula.c3 { left: 770px; }
+
+/* grupo: marcos anchos para que se vean todas las personas */
+.marco-grupo { border-radius: 44px; }
+.marco-grupo.principal { left: 850px; top: 96px; width: 1000px; height: 590px; }
+.marco-grupo.chico { top: 710px; width: 488px; height: 280px; border-radius: 140px; }
+.marco-grupo.a { left: 850px; }
+.marco-grupo.b { left: 1362px; }
+.marco-grupo.a.solo { width: 1000px; }
+.invertida .marco-grupo.principal, .invertida .marco-grupo.a { left: 70px; }
+.invertida .marco-grupo.b { left: 582px; }
+.vertical .marco-grupo.principal { left: 850px; width: 640px; height: 894px; }
+.vertical .marco-grupo.a.solo { left: 1510px; top: 96px; width: 340px; height: 894px; border-radius: 170px; }
+.vertical.invertida .marco-grupo.principal { left: 70px; }
+.vertical.invertida .marco-grupo.a.solo { left: 730px; }
+
+/* corte: paneles inclinados como el título; el texto se aparta de la diagonal */
+.corte .ficha { width: 620px; }
+.corte.invertida .ficha { right: 70px; width: 640px; }
+.panel { position: absolute; top: 60px; height: 960px; background: #fff; clip-path: polygon(30% 0, 100% 0, 70% 100%, 0 100%); }
+.panel > div { position: absolute; inset: 0 5px; overflow: hidden; clip-path: polygon(30% 0, 100% 0, 70% 100%, 0 100%); }
+.panel.p1 { left: 760px; width: 560px; }
+.panel.p2 { left: 1090px; width: 560px; }
+.panel.p3 { left: 1420px; width: 560px; }
+.invertida .panel.p1 { left: -60px; }
+.invertida .panel.p2 { left: 270px; }
+.invertida .panel.p3 { left: 600px; }
+
+/* ventana */
+.marco {
+  position: absolute; left: 860px; top: 200px; width: 980px; height: 620px; overflow: hidden;
+  border: 4px solid #fff; border-radius: 310px; box-shadow: 0 30px 80px rgba(0,0,0,.45);
+}
+.redonda {
+  position: absolute; left: 790px; top: 620px; width: 340px; height: 340px; overflow: hidden;
+  border: 4px solid #fff; border-radius: 50%; box-shadow: 0 24px 60px rgba(0,0,0,.45);
+}
+.invertida .marco { left: 80px; }
+.invertida .redonda { left: 720px; }
+.ventana:not(.invertida) .redonda { left: 830px; }
+
+/* solo nombre */
+.empresa.solo .ficha { left: 260px; width: 1400px; align-items: flex-start; }
+.empresa.solo .ficha h1 { font-size: 110px !important; }
+
+/* ---------- portada ---------- */
+
+.foto-sede { overflow: visible; }
+.foto-sede img {
+  position: absolute; left: -190px; top: -470px; width: 2300px; height: 1294px; object-fit: cover;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8.5%, #000 91.5%, transparent), linear-gradient(180deg, transparent, #000 23%);
+          mask-image: linear-gradient(90deg, transparent, #000 8.5%, #000 91.5%, transparent), linear-gradient(180deg, transparent, #000 23%);
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
+}
+.titulo {
+  position: absolute; left: 455px; top: 705px; width: 1010px; height: 273px;
+  animation: flotar-titulo 8s ease-in-out infinite alternate; will-change: transform;
+}
+.titulo-svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.titulo-svg * { transform-box: fill-box; }
+@keyframes flotar-titulo {
+  from { transform: translateY(4px); }
+  to { transform: translateY(-4px); }
+}
+/* Brillo que cruza el título cada tanto, recortado a su silueta. */
+.destello {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  -webkit-mask: url(assets/marca/titulo.svg) center / 100% 100% no-repeat;
+          mask: url(assets/marca/titulo.svg) center / 100% 100% no-repeat;
+}
+.destello i {
+  position: absolute; top: -20%; left: 0; width: 260px; height: 140%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.75), transparent);
+  transform: translateX(-320px) skewX(-30deg); will-change: transform;
+  animation: cruzar-titulo 9s ease-in-out 2.2s infinite;
+}
+@keyframes cruzar-titulo {
+  from { transform: translateX(-320px) skewX(-30deg); }
+  28%, to { transform: translateX(1280px) skewX(-30deg); }
+}
+
+/* ---------- apertura ---------- */
+
+.ap-texto { position: absolute; left: 140px; top: 290px; width: 1000px; }
+.rotulo { margin: 0 0 26px; font: 500 27px/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: #9fd4f3; }
+.ap-texto h1 { margin: 0; font: 500 96px/1.08 var(--serif); }
+.ap-texto .sub { margin: 36px 0 0; width: 800px; font: 400 29px/1.5 var(--sans); color: var(--texto-suave); }
+.ap-cifra {
+  position: absolute; display: flex; align-items: center; justify-content: center;
+  width: 210px; height: 500px; border: 3px solid #fff; border-radius: 999px;
+}
+.ap-cifra b { font: 500 92px/1 var(--serif); }
+.ap-cifra.n1 { left: 1160px; top: 340px; color: #cfd6e4; }
+.ap-cifra.n2 { left: 1400px; top: 240px; color: #e0bd6c; }
+.ap-cifra.n3 { left: 1640px; top: 340px; color: #d29a62; }
+
+/* ---------- capítulo: isla blanca, como el diploma ---------- */
+
+.isla div {
+  position: absolute; left: -700px; top: -560px; width: 3320px; height: 2200px; background: #fff;
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 76%, transparent 100%);
+          mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 76%, transparent 100%);
+}
+.video-anos { position: absolute; left: 300px; top: 120px; width: 1320px; mix-blend-mode: multiply; }
+.cap-texto { position: absolute; left: 330px; top: 700px; width: 1260px; margin: 0; text-align: center; color: var(--tinta); font: 500 31px/1.45 var(--sans); }
+
+/* ---------- muro ---------- */
+
+.muro-titulo { position: absolute; left: 0; right: 0; top: 66px; margin: 0; text-align: center; font: 500 66px/1.1 var(--serif); }
+.fila { position: absolute; left: 0; right: 0; display: flex; justify-content: center; gap: 22px; }
+.fila.f1 { top: 200px; } .fila.f2 { top: 410px; } .fila.f3 { top: 620px; } .fila.f4 { top: 830px; }
+.ladrillo {
+  display: flex; align-items: center; justify-content: center;
+  width: 280px; height: 185px; padding: 24px 28px; background: #fff; border-radius: 26px;
+  color: var(--azul); text-align: center; font: 600 23px/1.25 var(--sans);
+}
+.ladrillo.oscura { background: #0d2a66; color: #fff; }
+.ladrillo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+/* ---------- gratitud ---------- */
+
+.gratitud-letra { position: absolute; width: 620px; }
+.gratitud-letra.grande { left: 460px; top: 240px; width: 1000px; }
+.gr-texto { position: absolute; left: 330px; top: 680px; width: 1260px; margin: 0; text-align: center; color: var(--texto-suave); font: 400 31px/1.5 var(--sans); }
+
+.m-nombre { position: absolute; top: 400px; width: 1300px; }
+.m-nombre h1 { margin: 0; font: 500 108px/1.12 var(--serif); }
+.periodos { display: flex; flex-wrap: wrap; gap: 18px; margin: 44px 0 0; }
+.periodos span { padding: 12px 34px; border: 2px solid #fff; border-radius: 40px; font: 500 29px/1.2 var(--sans); letter-spacing: .04em; }
+
+.miembro.izq .m-nombre { left: 150px; }
+.miembro.izq .gratitud-letra { left: 140px; top: 130px; }
+.miembro.der .m-nombre { right: 150px; text-align: right; }
+.miembro.der .periodos { justify-content: flex-end; }
+.miembro.der .gratitud-letra { right: 140px; top: 130px; }
+.miembro.cen .m-nombre { left: 310px; text-align: center; }
+.miembro.cen .periodos { justify-content: center; }
+.miembro.cen .gratitud-letra { left: 650px; top: 130px; }
+
+/* ---------- cierre ---------- */
+
+.ci-gracias { position: absolute; left: 0; right: 0; top: 400px; margin: 0; text-align: center; font: 500 210px/1 var(--serif); }
