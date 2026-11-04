@@ -33,13 +33,14 @@ window.DISCURSO = (() => {
 
   // ---------- diapositivas ----------
 
+  // Portada: la presidenta a la derecha, fundida con el azul; su nombre a la izquierda.
   const portada = () => diapositiva('d-portada', 0, 'curva', `
-    <div class="capa" data-p=".84">${ola('#008dd4', 'M-1000 960L-300 880C260 700 620 1020 1120 860S1720 620 2300 700L2920 780V1880H-1000Z', .25)}</div>
+    <div class="capa d-presidenta" data-p=".9"><img src="assets/discurso/presidenta.jpg" alt=""></div>
     <div class="capa" data-p="1.18"><div class="d-portada-texto">
       <p class="d-rotulo">17° Encuentro Red de Afiliados 2026</p>
-      <h1>Palabras de la Presidenta Ejecutiva</h1>
-      <p class="d-firma">Dra. María Luisa Jaramillo Zapata</p>
-      <p class="d-lugar">Itagüí, 5 de noviembre de 2026</p>
+      <h1>María Luisa<br>Jaramillo Zapata</h1>
+      <p class="d-firma">Presidenta Ejecutiva</p>
+      <p class="d-lugar">Cámara de Comercio Aburrá Sur</p>
     </div></div>`);
 
   const PRIORIDADES = [

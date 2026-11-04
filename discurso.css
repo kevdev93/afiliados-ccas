@@ -26,8 +26,24 @@
 .discurso [style*="--n"] { --retraso: calc(var(--n) * .14s + .35s); }
 
 /* ---------- portada ---------- */
-.d-portada-texto { position: absolute; left: 140px; top: 300px; width: 1200px; }
-.d-portada-texto h1 { margin: 0; font: 500 110px/1.05 var(--serif); }
+.d-portada-texto { position: absolute; left: 140px; top: 330px; width: 900px; }
+.d-portada-texto h1 { margin: 0; font: 500 96px/1.05 var(--serif); }
+/* La foto se funde por todos sus bordes, para que no aparezca un corte recto al viajar.
+   La cabeza queda muy cerca del borde de arriba: un foco redondo la mantiene entera mientras el resto se desvanece. */
+.d-presidenta img {
+  position: absolute; left: 911px; top: -20px; height: 1100px; width: auto;
+  filter: brightness(.9) saturate(.85);
+  -webkit-mask-image:
+    radial-gradient(circle at 45.8% 170px, #000 115px, transparent 175px),
+    linear-gradient(90deg, transparent, rgba(0,0,0,.3) 11%, rgba(0,0,0,.75) 21%, #000 30%, #000 86%, transparent),
+    linear-gradient(180deg, transparent, rgba(0,0,0,.4) 7%, #000 17%, #000 94%, transparent);
+          mask-image:
+    radial-gradient(circle at 45.8% 170px, #000 115px, transparent 175px),
+    linear-gradient(90deg, transparent, rgba(0,0,0,.3) 11%, rgba(0,0,0,.75) 21%, #000 30%, #000 86%, transparent),
+    linear-gradient(180deg, transparent, rgba(0,0,0,.4) 7%, #000 17%, #000 94%, transparent);
+  -webkit-mask-composite: source-over, source-in;
+          mask-composite: add, intersect;
+}
 .d-firma { margin: 46px 0 0; font: 600 44px/1.2 var(--sans); color: #fff; }
 .d-lugar { margin: 14px 0 0; font: 400 30px/1.3 var(--sans); color: var(--texto-suave); }
 
