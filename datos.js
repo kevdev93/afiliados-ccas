@@ -43,7 +43,7 @@ window.ENCUENTRO = {
     { id: 'colplast', anos: 25, nombre: 'Colplast S.A.S.', logo: 'logo.png', plantilla: 'grupo', fotos: ['foto-3.jpg', ['foto-1.jpg', '50% 6%'], ['foto-2.jpg', '50% 8%'], 'foto-4.jpg'] },
     { id: 'boom', anos: 25, nombre: 'Supermercado Boom S.A.S.', logo: 'logo.png', fotos: ['foto-1.jpg', 'foto-2.jpg', 'foto-3.jpg'] },
     { id: 'incymec', anos: 25, nombre: 'Incymec Compañía Metalmecánica S.A.S.', logo: 'logo.png', plantilla: 'grupo', fotos: [['foto-2.jpg', '50% 40%'], ['foto-1.jpg', '50% 45%'], ['foto-3.jpg', '50% 50%']] },
-    { id: 'alianza-mayorista', anos: 25, nombre: 'Alianza Mayorista S.A.S.', logo: 'logo.png', fotos: [] },
+    { id: 'alianza-mayorista', anos: 25, nombre: 'Alianza Mayorista S.A.S.', logo: 'logo-alima.png', fotos: ['foto-1.jpg', 'foto-2.jpg'] },
     { id: 'negocios-asociados', anos: 25, nombre: 'Negocios Asociados S.A.S.', logo: 'logo.png', placaColor: '#009c3d', plantilla: 'grupo', vertical: true, fotos: [['foto-1.jpg', '50% 72%'], ['foto-2.jpg', '62% 50%']] },
     { id: 'redihos', anos: 25, nombre: 'Representaciones y Distribuciones Hospitalarias S.A.S.', logo: 'logo.svg', plantilla: 'grupo', fotos: [['foto-2.jpg', '50% 58%'], ['foto-3.jpg', '60% 26%'], ['foto-1.jpg', '50% 40%'], 'foto-4.jpg'] },
 
@@ -56,7 +56,6 @@ window.ENCUENTRO = {
 
   junta: [
     { nombre: 'Diego Alonso Marín Monsalve', periodos: ['2010 – 2012', '2019 – 2026'] },
-    { nombre: 'Juan Felipe Acosta Quiroz', periodos: ['2023 – 2026'] },
     { nombre: 'Pedro Montoya Muñoz', periodos: ['2019 – 2026'] },
     { nombre: 'Juan Felipe González García', periodos: ['2023 – 2026'] },
     { nombre: 'Juan Fernando Cano Hoyos', periodos: ['2019 – 2023', '2024 – 2025'] },
@@ -64,9 +63,7 @@ window.ENCUENTRO = {
     { nombre: 'Juan David Chavarriaga Gómez', periodos: ['2023 – 2026'] },
     { nombre: 'Gustavo Andrés Giraldo Macías', periodos: ['2023 – 2026'] },
     { nombre: 'Claudia Patricia García Muñoz', periodos: ['2023 – 2026'] },
-    { nombre: 'José Luis Arango Villegas', periodos: ['2019 – 2026'] },
     { nombre: 'Juan Carlos Rico Llano', periodos: ['2010 – 2026'] },
     { nombre: 'Ledy Eugenia Vásquez Castillo', periodos: ['2023 – 2026'] },
-    { nombre: 'David de Jesús Mejía Peláez', periodos: ['1998 – 2010', '2012 – 2018', '2023 – 2026'] },
   ],
 };

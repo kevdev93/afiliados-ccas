@@ -1,7 +1,7 @@
 // Presentación del 17° Encuentro Red de Afiliados 2026.
 // Navegación y arranque; el movimiento está en camara.js y el contenido en escenas.js, discurso.js y datos.js.
 // Hay dos presentaciones en el mismo mundo: los homenajes y el discurso de la presidenta.
-// Se pasa de una a otra con la tecla D o el botón de la esquina; cada una recuerda dónde iba.
+// Se pasa de una a otra con la tecla D o el botón de la esquina; siempre se llega a la portada.
 (() => {
   'use strict';
 
@@ -11,7 +11,6 @@
   const lienzo = $('#lienzo');
 
   const listas = { homenajes: [], discurso: [] };
-  const posicion = { homenajes: 0, discurso: 0 };
   let modo = 'homenajes';
   let actual = -1;
 
@@ -25,7 +24,6 @@
     const lista = listas[modo];
     if (indice < 0 || indice >= lista.length || indice === actual) return;
     actual = indice;
-    posicion[modo] = indice;
     const e = lista[indice];
     CAMARA.ir(e, directo);
     if (!directo) SONIDO.cambio();
@@ -34,8 +32,8 @@
     $('#ayuda-paso').textContent = `${modo === 'discurso' ? 'Discurso' : 'Homenajes'} · escena ${indice + 1} de ${lista.length} · ${e.id}`;
   }
 
-  // Cambia de presentación y vuelve a la escena donde había quedado.
-  function cambiarModo(nuevo, indice = posicion[nuevo], directo = false) {
+  // Cambia de presentación; sin un índice, empieza en su portada.
+  function cambiarModo(nuevo, indice = 0, directo = false) {
     if (nuevo !== modo) {
       modo = nuevo;
       actual = -1;

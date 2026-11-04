@@ -110,25 +110,16 @@ window.DISCURSO = (() => {
       </div></div>`);
   }
 
-  const MUNICIPIOS = [['Envigado', 38], ['Itagüí', 30], ['Sabaneta', 18], ['La Estrella', 8], ['Caldas', 4]];
-  function territorio() {
-    const max = Math.max(...MUNICIPIOS.map((m) => m[1]));
-    return diapositiva('d-territorio', 0, 'curva', `
-      ${cabeza('Presencia regional', 'Beneficiarios en los cinco municipios')}
-      <div class="capa" data-p="1.04"><div class="d-barras">${MUNICIPIOS.map(([nombre, v], i) => `
-        <div class="d-barra" style="--n:${i}"><span class="d-nombre">${nombre}</span><div class="d-pista"><i style="width:${v / max * 100}%"></i></div><b><span data-contar="${v}">${v}</span>%</b></div>`).join('')}
-      </div></div>`);
-  }
-
   function cobertura() {
     const puntos = Array.from({ length: 100 }, (_, i) => `<i class="${i < 31 ? 'si' : ''}" style="--n:${i}"></i>`).join('');
     return diapositiva('d-cobertura', 1, 'curva', `
       ${cabeza('Impacto en el tejido empresarial', 'Llegamos a casi un tercio de nuestras empresas')}
-      <div class="capa" data-p="1.1"><div class="d-cifra" style="left:140px;top:380px">
+      <div class="capa" data-p="1.1"><div class="d-cifra d-cobertura-cifra" style="left:140px;top:300px">
         <b><span data-contar="31">31</span><small>%</small></b>
         <span class="d-unidad">de la base empresarial impactada</span>
-        <p>Base de <strong>34.910</strong> unidades productivas reportadas por la Cámara al cierre de 2025.</p>
+        <div class="d-base"><b data-contar="34910">34.910</b><p>unidades productivas en la base de la Cámara al cierre de 2025</p></div>
       </div></div>
+      <div class="capa" data-p="1.14"><p class="d-aliado">En alianza con el Gobierno Nacional</p></div>
       <div class="capa" data-p=".98"><div class="d-puntos">${puntos}</div></div>`);
   }
 
@@ -237,7 +228,7 @@ window.DISCURSO = (() => {
   const cierre = () => diapositiva('d-cierre', 2, 'curva', `
     <div class="capa" data-p=".84">${ola('#008dd4', 'M-1000 900L-300 820C260 640 620 960 1120 800S1720 560 2300 640L2920 720V1880H-1000Z', .22)}</div>
     <div class="capa" data-p="1.2"><div class="d-final">
-      <h1>Sin empresas no hay país.</h1>
+      <div class="d-campana"><img src="assets/discurso/sin-empresas-no-hay-pais.png" alt="Sin empresas no hay país"></div>
       <p>Y sin empresarios comprometidos, instituciones articuladas y territorios que crean en su potencial, tampoco habrá desarrollo sostenible ni prosperidad colectiva.</p>
       <span>Muchas gracias</span>
     </div></div>`);
@@ -261,8 +252,8 @@ window.DISCURSO = (() => {
   }
 
   function construir() {
-    const fabricas = [portada, prioridades, inversion, frentes, territorio, cobertura, inclusion, sectores, escalera, alianzas, puerto, conecta, gracias, vision, cierre];
-    const ids = ['portada', 'prioridades', 'inversion', 'frentes', 'territorio', 'cobertura', 'inclusion', 'sectores', 'apuesta', 'alianzas', 'puerto', 'conecta', 'gracias', 'vision', 'cierre'];
+    const fabricas = [portada, prioridades, inversion, frentes, cobertura, inclusion, sectores, escalera, alianzas, puerto, conecta, gracias, vision, cierre];
+    const ids = ['portada', 'prioridades', 'inversion', 'frentes', 'cobertura', 'inclusion', 'sectores', 'apuesta', 'alianzas', 'puerto', 'conecta', 'gracias', 'vision', 'cierre'];
     const lista = fabricas.map((f, i) => {
       const t = document.createElement('template');
       t.innerHTML = f().trim();
