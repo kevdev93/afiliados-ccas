@@ -1,0 +1,223 @@
+/* Presentación del discurso: misma línea gráfica que la de homenajeados.
+   Los gráficos parten vacíos y se arman cuando la escena recibe la clase .activa (al llegar). */
+
+.discurso { --curva-d: cubic-bezier(.16, 1, .3, 1); }
+.discurso .icono { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+
+.d-cabeza { position: absolute; left: 140px; top: 120px; width: 1640px; }
+.d-rotulo { margin: 0 0 18px; font: 500 26px/1.3 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: #9fd4f3; }
+/* Una sola línea, para que el título nunca baje sobre el gráfico. */
+.d-titulo { margin: 0; font: 500 66px/1.1 var(--serif); white-space: nowrap; }
+.d-texto { position: absolute; left: 140px; }
+.d-texto p { margin: 0 0 26px; font: 400 32px/1.5 var(--sans); color: var(--texto-suave); }
+.d-texto strong, .d-cifra strong { color: #fff; font-weight: 600; }
+.d-texto blockquote, .d-cita {
+  margin: 40px 0 0; padding-left: 30px; border-left: 3px solid #6cc4f2;
+  font: italic 500 38px/1.35 var(--serif); color: #fff;
+}
+.d-cita { position: absolute; left: 140px; width: 1500px; margin: 0; }
+
+/* entradas: suben y aparecen en orden según --n */
+@keyframes d-subir { from { opacity: 0; transform: translateY(36px); } to { opacity: 1; transform: none; } }
+@keyframes d-crecer-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes d-crecer-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes d-trazo { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes d-aparecer { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+.discurso [style*="--n"] { --retraso: calc(var(--n) * .14s + .35s); }
+
+/* ---------- portada ---------- */
+.d-portada-texto { position: absolute; left: 140px; top: 300px; width: 1200px; }
+.d-portada-texto h1 { margin: 0; font: 500 110px/1.05 var(--serif); }
+.d-firma { margin: 46px 0 0; font: 600 44px/1.2 var(--sans); color: #fff; }
+.d-lugar { margin: 14px 0 0; font: 400 30px/1.3 var(--sans); color: var(--texto-suave); }
+
+/* ---------- prioridades: diagrama radial ---------- */
+.d-lineas { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.d-lineas line { stroke: rgba(108,196,242,.55); stroke-width: 2.5; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.activa .d-lineas line { animation: d-trazo 1s var(--curva-d) var(--retraso) both; }
+.d-centro {
+  position: absolute; width: 240px; height: 240px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  background: radial-gradient(circle, rgba(108,196,242,.35), rgba(31,61,128,.85) 70%);
+  border: 3px solid #6cc4f2; box-shadow: 0 0 80px rgba(108,196,242,.35);
+  font: 600 28px/1.25 var(--sans);
+}
+.d-centro-logo { width: 260px; height: 260px; }
+.d-centro-logo img { width: 62%; }
+.d-nodo { position: absolute; width: 190px; text-align: center; opacity: 0; }
+.activa .d-nodo { animation: d-aparecer .9s var(--curva-d) var(--retraso) both; }
+.d-nodo i {
+  display: block; width: 104px; height: 104px; margin: 0 auto 14px; padding: 24px; border-radius: 50%;
+  background: rgba(10,30,80,.85); border: 2px solid rgba(255,255,255,.75); color: #fff;
+  box-shadow: 0 0 40px rgba(108,196,242,.3);
+}
+.d-nodo span { font: 500 23px/1.25 var(--sans); }
+
+/* ---------- inversión: cifras grandes ---------- */
+.d-cifra { position: absolute; width: 900px; }
+.d-cifra b { display: block; font: 500 230px/1 var(--serif); color: #fff; text-shadow: 0 0 60px rgba(108,196,242,.45); }
+.d-cifra b small { font-size: .45em; vertical-align: .9em; margin-right: 8px; color: #6cc4f2; }
+.d-cifra-b b { color: #6cc4f2; }
+.d-unidad { display: block; margin-top: 10px; font: 600 40px/1.2 var(--sans); }
+.d-cifra p { margin: 18px 0 0; width: 640px; font: 400 28px/1.45 var(--sans); color: var(--texto-suave); }
+.d-aliado {
+  position: absolute; left: 140px; top: 900px; margin: 0; padding: 18px 36px; border-radius: 50px;
+  border: 2px solid rgba(255,255,255,.6); font: 500 28px/1.2 var(--sans);
+}
+.activa .d-cifra, .activa .d-aliado { animation: d-subir 1s var(--curva-d) .3s both; }
+
+/* ---------- frentes: dona ---------- */
+.d-dona { position: absolute; width: 620px; height: 620px; }
+.d-dona svg { width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
+.d-dona circle { fill: none; stroke-width: 92; stroke-dasharray: 0 100; }
+.d-dona circle.pista { stroke: rgba(255,255,255,.08); stroke-dasharray: none; }
+.activa .d-dona circle:not(.pista) { animation: d-dona 1.4s var(--curva-d) var(--retraso) both; }
+@keyframes d-dona { from { stroke-dasharray: 0 100; } to { stroke-dasharray: var(--d); } }
+.d-dona-centro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.d-dona-centro b { font: 500 140px/1 var(--serif); }
+.d-dona-centro span { font: 500 32px/1 var(--sans); color: var(--texto-suave); }
+.d-leyenda { position: absolute; left: 900px; top: 330px; width: 900px; }
+.d-fila { display: flex; align-items: center; gap: 30px; margin-bottom: 34px; opacity: 0; }
+.activa .d-fila { animation: d-subir .9s var(--curva-d) var(--retraso) both; }
+.d-fila > b { flex: 0 0 120px; font: 500 96px/1 var(--serif); color: var(--c); text-align: right; }
+.d-fila h3 { margin: 0 0 6px; font: 600 32px/1.2 var(--sans); }
+.d-fila h3::before { content: ""; display: inline-block; width: 18px; height: 18px; border-radius: 50%; background: var(--c); margin-right: 14px; vertical-align: 2px; }
+.d-fila p { margin: 0; font: 400 24px/1.4 var(--sans); color: var(--texto-suave); }
+
+/* ---------- territorio: barras ---------- */
+.d-barras { position: absolute; left: 140px; top: 340px; width: 1640px; }
+.d-barra { display: flex; align-items: center; height: 110px; margin-bottom: 26px; }
+.d-nombre { flex: 0 0 330px; font: 500 48px/1 var(--serif); }
+.d-pista { flex: 1; height: 64px; border-radius: 32px; background: rgba(255,255,255,.07); overflow: hidden; }
+.d-pista i {
+  display: block; height: 100%; border-radius: 32px; transform-origin: left; transform: scaleX(0);
+  background: linear-gradient(90deg, #1f6fc0, #6cc4f2); box-shadow: 0 0 40px rgba(108,196,242,.4);
+}
+.activa .d-pista i { animation: d-crecer-x 1.3s var(--curva-d) var(--retraso) both; }
+.d-barra b { flex: 0 0 200px; text-align: right; font: 500 72px/1 var(--serif); color: #fff; }
+
+/* ---------- cobertura: 100 puntos ---------- */
+.d-puntos { position: absolute; left: 1120px; top: 300px; width: 660px; display: grid; grid-template-columns: repeat(10, 1fr); gap: 14px; }
+.d-puntos i { display: block; aspect-ratio: 1; border-radius: 50%; border: 2px solid rgba(255,255,255,.22); }
+.d-puntos i.si { background: #6cc4f2; border-color: #6cc4f2; box-shadow: 0 0 18px rgba(108,196,242,.7); opacity: 0; }
+.activa .d-puntos i.si { animation: d-aparecer .5s var(--curva-d) calc(var(--n) * .045s + .5s) both; }
+
+/* ---------- inclusión: barra apilada ---------- */
+.d-apilada { position: absolute; left: 140px; top: 410px; width: 1640px; display: flex; gap: 10px; }
+.d-segmento { min-width: 0; opacity: 0; }
+.activa .d-segmento { animation: d-subir 1s var(--curva-d) var(--retraso) both; }
+.d-segmento b { display: block; margin-bottom: 18px; font: 500 72px/1 var(--serif); color: var(--c); }
+.d-segmento i { display: block; height: 110px; border-radius: 18px; background: var(--c); transform-origin: left; box-shadow: 0 0 40px color-mix(in srgb, var(--c) 40%, transparent); }
+.activa .d-segmento i { animation: d-crecer-x 1.2s var(--curva-d) var(--retraso) both; }
+.d-segmento span { display: block; margin-top: 18px; font: 600 32px/1.2 var(--sans); }
+
+/* ---------- sectores: tarjetas ---------- */
+.d-tarjetas { position: absolute; left: 140px; top: 380px; width: 1640px; display: flex; gap: 28px; }
+.d-tarjeta {
+  flex: 1; height: 520px; padding: 44px 30px; border-radius: 30px; text-align: center; opacity: 0;
+  background: linear-gradient(180deg, rgba(31,61,128,.75), rgba(10,25,64,.55));
+  border: 2px solid rgba(255,255,255,.25); box-shadow: 0 0 60px rgba(108,196,242,.12);
+}
+.activa .d-tarjeta { animation: d-subir 1s var(--curva-d) var(--retraso) both; }
+.d-tarjeta i { display: block; width: 150px; height: 150px; margin: 0 auto 36px; padding: 34px; border-radius: 50%; border: 2px solid #6cc4f2; color: #6cc4f2; box-shadow: 0 0 50px rgba(108,196,242,.3); }
+.d-tarjeta h3 { margin: 0 0 16px; font: 500 40px/1.15 var(--serif); }
+.d-tarjeta p { margin: 0; font: 400 25px/1.4 var(--sans); color: var(--texto-suave); }
+
+/* ---------- escalera ---------- */
+.d-peldanos { position: absolute; left: 160px; bottom: 90px; width: 1600px; display: flex; align-items: flex-end; gap: 40px; }
+.d-peldano {
+  flex: 1; padding: 40px 38px; border-radius: 30px 30px 0 0; transform-origin: bottom; transform: scaleY(0);
+  background: linear-gradient(180deg, rgba(108,196,242,.55), rgba(31,61,128,.2));
+  border: 2px solid rgba(108,196,242,.7); border-bottom: none;
+}
+.activa .d-peldano { animation: d-crecer-y 1.1s var(--curva-d) var(--retraso) both; }
+.d-peldano b { display: block; font: 500 80px/1 var(--serif); color: #fff; }
+.d-peldano span { display: block; margin-top: 16px; font: 600 32px/1.3 var(--sans); }
+
+/* ---------- alianzas: red ---------- */
+.d-aliada {
+  position: absolute; width: 460px; padding: 26px 30px; border-radius: 24px; text-align: center; opacity: 0;
+  background: rgba(10,30,80,.85); border: 2px solid rgba(255,255,255,.4); box-shadow: 0 0 50px rgba(108,196,242,.2);
+}
+.activa .d-aliada { animation: d-aparecer .9s var(--curva-d) calc(var(--n) * .2s + .6s) both; }
+.d-aliada h3 { margin: 0 0 10px; font: 500 34px/1.15 var(--serif); }
+.d-aliada p { margin: 0; font: 400 23px/1.35 var(--sans); color: #9fd4f3; }
+
+/* ---------- del puerto al aeropuerto ---------- */
+.d-trayecto { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: none; }
+.d-trayecto path { stroke: rgba(108,196,242,.6); stroke-width: 4; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.activa .d-trayecto path { animation: d-trazo 1.6s var(--curva-d) .5s both; }
+.d-trayecto path.flujo { stroke: #fff; stroke-width: 6; stroke-linecap: round; stroke-dasharray: 2 34; stroke-dashoffset: 0; opacity: .8; animation: d-flujo 2.4s linear infinite; }
+@keyframes d-flujo { to { stroke-dashoffset: -36; } }
+.d-extremo { position: absolute; width: 180px; text-align: center; }
+.d-extremo i { display: block; width: 180px; height: 180px; padding: 40px; border-radius: 50%; background: rgba(10,30,80,.9); border: 3px solid #6cc4f2; color: #fff; box-shadow: 0 0 60px rgba(108,196,242,.4); }
+.d-extremo span { display: block; margin-top: 16px; font: 600 26px/1.2 var(--sans); white-space: nowrap; margin-left: -40px; margin-right: -40px; }
+.d-arco-texto { position: absolute; left: 620px; top: 470px; width: 680px; margin: 0; text-align: center; font: italic 500 34px/1.35 var(--serif); }
+.d-tres { position: absolute; left: 140px; top: 760px; width: 1640px; display: flex; gap: 40px; }
+.d-tres div { flex: 1; text-align: center; opacity: 0; }
+.activa .d-tres div { animation: d-subir .9s var(--curva-d) calc(var(--n) * .15s + .9s) both; }
+.d-tres b { display: block; font: 500 52px/1.1 var(--serif); color: #6cc4f2; }
+.d-tres span { font: 400 28px/1.3 var(--sans); }
+.d-chips { position: absolute; left: 100px; top: 960px; width: 1720px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.d-chips span { padding: 9px 20px; border-radius: 30px; border: 1px solid rgba(255,255,255,.45); font: 500 19px/1.2 var(--sans); opacity: 0; }
+.activa .d-chips span { animation: d-subir .7s var(--curva-d) calc(var(--n) * .08s + 1.2s) both; }
+
+/* ---------- conecta: ondas concéntricas ---------- */
+.d-ondas { position: absolute; left: 1000px; top: 250px; width: 760px; height: 760px; }
+.d-ondas > div { position: absolute; border-radius: 50%; display: flex; justify-content: center; }
+.d-ondas .anillo { border: 2px solid rgba(108,196,242,.6); align-items: flex-start; opacity: 0; }
+.d-ondas .anillo span { margin-top: 18px; font: 600 24px/1 var(--sans); color: #9fd4f3; }
+.d-ondas .a3 { inset: 0; background: rgba(108,196,242,.05); }
+.d-ondas .a2 { inset: 110px; background: rgba(108,196,242,.08); }
+.d-ondas .a1 { inset: 220px; background: rgba(108,196,242,.12); }
+.d-ondas .nucleo { inset: 300px; align-items: center; text-align: center; background: #6cc4f2; color: #0b2154; box-shadow: 0 0 80px rgba(108,196,242,.6); opacity: 0; }
+.d-ondas .nucleo span { font: 700 21px/1.2 var(--sans); padding: 0 12px; }
+.activa .d-ondas .nucleo { animation: d-aparecer .8s var(--curva-d) .4s both; }
+.activa .d-ondas .a1 { animation: d-aparecer .9s var(--curva-d) .7s both; }
+.activa .d-ondas .a2 { animation: d-aparecer .9s var(--curva-d) .95s both; }
+.activa .d-ondas .a3 { animation: d-aparecer .9s var(--curva-d) 1.2s both; }
+.d-ondas .pulso { position: absolute; inset: 300px; border-radius: 50%; border: 2px solid #6cc4f2; opacity: 0; animation: d-pulso 5s ease-out infinite; will-change: transform, opacity; }
+.d-ondas .pulso + .pulso { animation-delay: 2.5s; }
+@keyframes d-pulso { from { transform: scale(1); opacity: .7; } to { transform: scale(4.6); opacity: 0; } }
+
+/* ---------- gracias: cadena de impacto ---------- */
+.d-cadena { position: absolute; left: 120px; top: 380px; width: 1680px; display: flex; align-items: flex-start; }
+.d-eslabon { flex: 0 0 260px; text-align: center; opacity: 0; }
+.activa .d-eslabon { animation: d-subir .9s var(--curva-d) calc(var(--n) * .25s + .3s) both; }
+.d-eslabon i { display: block; width: 170px; height: 170px; margin: 0 auto 22px; padding: 38px; border-radius: 50%; background: rgba(10,30,80,.85); border: 2px solid #6cc4f2; color: #fff; box-shadow: 0 0 50px rgba(108,196,242,.3); }
+.d-eslabon:first-child i { background: #6cc4f2; color: #0b2154; }
+.d-eslabon span { font: 500 25px/1.3 var(--sans); }
+.d-flecha { flex: 1; height: 3px; margin-top: 84px; background: linear-gradient(90deg, rgba(108,196,242,.2), #6cc4f2); position: relative; transform-origin: left; transform: scaleX(0); }
+.d-flecha::after { content: ""; position: absolute; right: -2px; top: -7px; border: 8px solid transparent; border-left: 12px solid #6cc4f2; }
+.activa .d-flecha { animation: d-crecer-x .6s var(--curva-d) both; }
+.activa .d-flecha:nth-child(2) { animation-delay: .55s; }
+.activa .d-flecha:nth-child(4) { animation-delay: .8s; }
+.activa .d-flecha:nth-child(6) { animation-delay: 1.05s; }
+.activa .d-flecha:nth-child(8) { animation-delay: 1.3s; }
+
+/* ---------- visión: pares ---------- */
+.d-pares { position: absolute; left: 140px; top: 380px; width: 1640px; }
+.d-par { display: flex; align-items: center; height: 150px; margin-bottom: 36px; opacity: 0; }
+.activa .d-par { animation: d-subir .9s var(--curva-d) var(--retraso) both; }
+.d-par span { flex: 0 0 600px; font: 500 52px/1.15 var(--serif); color: rgba(255,255,255,.55); }
+.d-par i { flex: 0 0 150px; height: 3px; margin: 0 48px 0 24px; background: #6cc4f2; position: relative; }
+.d-par i::after { content: ""; position: absolute; right: -2px; top: -9px; border: 10px solid transparent; border-left: 16px solid #6cc4f2; }
+.d-par b { flex: 1; font: 500 52px/1.15 var(--serif); color: #fff; text-shadow: 0 0 40px rgba(108,196,242,.5); }
+
+/* ---------- cierre ---------- */
+.d-final { position: absolute; left: 160px; right: 160px; top: 300px; text-align: center; }
+.d-final h1 { margin: 0; font: 500 150px/1.05 var(--serif); text-shadow: 0 0 70px rgba(108,196,242,.45); }
+.d-final p { margin: 50px auto 0; width: 1300px; font: 400 32px/1.5 var(--sans); color: var(--texto-suave); }
+.d-final span { display: inline-block; margin-top: 50px; font: 600 30px/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: #6cc4f2; }
+.activa .d-final h1 { animation: d-subir 1.2s var(--curva-d) .3s both; }
+.activa .d-final p { animation: d-subir 1.2s var(--curva-d) .7s both; }
+.activa .d-final span { animation: d-subir 1.2s var(--curva-d) 1.1s both; }
+
+/* ---------- botón para cambiar de presentación ---------- */
+#cambiar {
+  position: fixed; right: 28px; bottom: 26px; z-index: 6;
+  padding: 12px 22px; border-radius: 30px; border: 1px solid rgba(255,255,255,.45);
+  background: rgba(6,16,44,.75); color: #fff; font: 500 16px/1 var(--sans); cursor: pointer;
+  transition: opacity .4s;
+}
+body.sin-cursor #cambiar { opacity: 0; pointer-events: none; }

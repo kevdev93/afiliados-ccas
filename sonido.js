@@ -16,6 +16,7 @@ window.SONIDO = (() => {
   let actual = null, proxima = null, cambios = [], turno = 0;
   let indice = 0, cruzando = false, fallos = 0;
   let silenciada = false, despierta = false, nivel = 0;
+  let enDiscurso = false;    // Durante el discurso no suena nada: habla la presidenta.
 
   function cargarProxima() {
     proxima.src = archivo((indice + 1) % CANCIONES);
@@ -51,7 +52,7 @@ window.SONIDO = (() => {
 
   function mezclar() {
     if (!despierta) return;
-    const meta = silenciada ? 0 : VOLUMEN;
+    const meta = silenciada || enDiscurso ? 0 : VOLUMEN;
     nivel += Math.sign(meta - nivel) * Math.min(Math.abs(meta - nivel), VOLUMEN / 15);
 
     const resta = actual.duration - actual.currentTime;
@@ -96,9 +97,10 @@ window.SONIDO = (() => {
       actual.play().catch(() => { despierta = false; });
     },
     alternar() { silenciada = !silenciada; return silenciada; },
+    modo(discurso) { enDiscurso = discurso; },
     // Varias voces, para que dos cambios seguidos no se corten entre sí.
     cambio() {
-      if (silenciada || !cambios.length) return;
+      if (silenciada || enDiscurso || !cambios.length) return;
       const a = cambios[turno++ % cambios.length];
       a.currentTime = 0;
       a.play().catch(() => {});

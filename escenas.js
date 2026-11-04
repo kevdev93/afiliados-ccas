@@ -246,8 +246,8 @@ window.ESCENAS = (() => {
 
   // Cada escena queda en una dirección distinta a la anterior y lejos de todas las demás.
   // La semilla es fija: el recorrido del ensayo es el mismo del evento.
-  function ubicar(lista) {
-    const r = azar(20261105);
+  function ubicar(lista, semilla = 20261105) {
+    const r = azar(semilla);
     let x = 0, y = 0, rumbo = 0;
     lista.forEach((e, i) => {
       if (i) {
@@ -303,5 +303,6 @@ window.ESCENAS = (() => {
     return ubicar(lista);
   }
 
-  return { construir };
+  // Piezas que reutiliza la presentación del discurso (discurso.js).
+  return { construir, piezas: { arco, ola, esc, ubicar } };
 })();
