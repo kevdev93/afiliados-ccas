@@ -28,7 +28,6 @@ window.ENCUENTRO = {
   },
 
   empresas: [
-    { id: 'cindy-mira', anos: 25, persona: 'Ángel Eugenio Mira Muñoz', nombre: 'Panadería Cindy Mira', logo: '', fotos: ['foto-1.jpg', 'foto-2.jpg', 'foto-3.jpg'] },
     { id: 'gehs', anos: 25, persona: 'Gloria Elena Herrera Sepúlveda', nombre: 'Almacén GEHS', logo: 'logo.png', fotos: ['foto-1.jpg', 'foto-2.jpg'] },
     { id: 'drogueria-cruz-blanca', anos: 25, persona: 'Hilda Amparo Pérez García', nombre: 'Droguería Cruz Blanca Sabaneta', logo: '', fotos: [['foto-1.jpg', '50% 72%'], ['foto-3.jpg', '50% 62%'], ['foto-2.jpg', '62% 58%']] },
     { id: 'credimuebles', anos: 25, persona: 'Bladimir Cano González', nombre: 'Almacén Credimuebles', logo: '', fotos: ['foto-1.jpg', 'foto-2.jpg', 'foto-3.jpg'] },
@@ -60,9 +59,6 @@ window.ENCUENTRO = {
     { nombre: 'Juan Felipe González García', periodos: ['2023 – 2026'] },
     { nombre: 'Juan Fernando Cano Hoyos', periodos: ['2019 – 2023', '2024 – 2025'] },
     { nombre: 'Daniel Esteban Gómez Cárdenas', periodos: ['2019 – 2025'] },
-    { nombre: 'Juan David Chavarriaga Gómez', periodos: ['2023 – 2026'] },
-    { nombre: 'Gustavo Andrés Giraldo Macías', periodos: ['2023 – 2026'] },
-    { nombre: 'Claudia Patricia García Muñoz', periodos: ['2023 – 2026'] },
     { nombre: 'Juan Carlos Rico Llano', periodos: ['2010 – 2026'] },
     { nombre: 'Ledy Eugenia Vásquez Castillo', periodos: ['2023 – 2026'] },
   ],
